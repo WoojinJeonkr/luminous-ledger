@@ -1,13 +1,12 @@
 export interface Frontmatter {
   title: string;
-  date: string; // ISO 8601 형식 (예: '2025-05-20')
+  date: string;
   type: 'tutorial' | 'project' | 'note';
   tags: string[];
   slug: string;
   description?: string;
   featuredImage?: string;
   status?: 'published' | 'draft';
-  [key: string]: any; // 추가적인 커스텀 필드를 위한 타입
 }
 
 export interface MarkdownContent {

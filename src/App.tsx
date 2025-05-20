@@ -1,124 +1,102 @@
-import { useEffect, useState } from 'react'
-import { MarkdownPage } from './components/MarkdownPage'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import './App.css';
+import { SectionPage } from './routes/SectionPage';
 
-interface Frontmatter {
-  title: string
-  date: string
-  type: 'tutorial' | 'project' | 'note'
-  tags: string[]
-  slug: string
-  description?: string
-  featuredImage?: string
-  status?: 'published' | 'draft'
-}
-
-interface MarkdownContent {
-  frontmatter: Frontmatter
-  content: string
-}
-
-function parseFrontmatter(text: string): { frontmatter: Frontmatter; content: string } {
-  // frontmatter 구분자 체크
-  const hasFrontmatter = text.includes('---\n') && text.includes('\n---\n');
-  if (!hasFrontmatter) {
-    throw new Error('No frontmatter found');
-  }
-
-  // frontmatter 텍스트 추출
-  const frontmatterStart = text.indexOf('---\n') + 4;
-  const frontmatterEnd = text.indexOf('\n---\n');
-  const frontmatterText = text.substring(frontmatterStart, frontmatterEnd);
-  
-  // content 추출
-  const contentStart = frontmatterEnd + 5;
-  const content = text.substring(contentStart);
-  
-  // frontmatter 파싱
-  const frontmatter: Record<string, any> = {};
-  frontmatterText.split('\n').forEach(line => {
-    const [key, value] = line.split(':').map(s => s.trim());
-    if (key && value) {
-      frontmatter[key] = value;
-    }
-  });
-
-  // 타입 체크 및 캐스팅
-  const parsedFrontmatter = {
-    title: frontmatter.title as string || '',
-    date: frontmatter.date as string || '',
-    type: (frontmatter.type as 'tutorial' | 'project' | 'note') || 'note',
-    tags: (frontmatter.tags as string || '').split(',').map(tag => tag.trim()),
-    slug: frontmatter.slug as string || '',
-    description: frontmatter.description as string | undefined,
-    featuredImage: frontmatter.featuredImage as string | undefined,
-    status: (frontmatter.status as 'published' | 'draft') || 'published'
-  };
-
-  return { frontmatter: parsedFrontmatter, content: content.trim() };
-}
+const sections = [
+  { title: '튜토리얼', type: 'tutorial', icon: '📚' },
+  { title: '프로젝트', type: 'project', icon: '💻' },
+  { title: '노트', type: 'note', icon: '📝' }
+];
 
 function App() {
-  const [markdown, setMarkdown] = useState<MarkdownContent | null>(null);
-
-  useEffect(() => {
-    const loadMarkdown = async () => {
-      try {
-        // public 디렉토리에서 파일 로드
-        const response = await fetch('/content/index.md');
-        if (!response.ok) {
-          throw new Error(`Failed to fetch markdown file: ${response.status}`);
-        }
-        const text = await response.text();
-        
-        console.log('Raw text:', text); // 디버깅을 위한 로그
-        
-        const parsed = parseFrontmatter(text);
-        
-        if (parsed.frontmatter.status === 'draft') {
-          console.log('Draft post skipped:', parsed.frontmatter.title);
-          return;
-        }
-
-        setMarkdown(parsed);
-      } catch (error) {
-        console.error('Failed to load markdown:', error);
-        setMarkdown(null);
-      }
-    };
-
-    loadMarkdown();
-  }, []);
-
-  if (!markdown) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="markdown-container">
-      <h1>{markdown.frontmatter.title}</h1>
-      <p className="meta">
-        <span className="date">{markdown.frontmatter.date}</span>
-        <span className="type">{markdown.frontmatter.type}</span>
-        {markdown.frontmatter.tags && (
-          <span className="tags">
-            {markdown.frontmatter.tags.map((tag, index) => (
-              <span key={index} className="tag">#{tag}</span>
-            ))}
-          </span>
-        )}
-        {markdown.frontmatter.description && (
-          <p className="description">{markdown.frontmatter.description}</p>
-        )}
-        {markdown.frontmatter.featuredImage && (
-          <img
-            src={markdown.frontmatter.featuredImage}
-            alt={markdown.frontmatter.title}
-            className="featured-image"
-          />
-        )}
-      </p>
-      <MarkdownPage content={markdown.content} />
-    </div>
+    <Router>
+      <div className="app-container">
+        <header className="header">
+          <nav className="nav">
+            <div className="logo">
+              <h1>Luminous Ledger</h1>
+            </div>
+            <div className="nav-links">
+              {sections.map(({ title, type, icon }) => (
+                <Link key={type} to={`/${type}`} className="nav-link">
+                  {icon} {title}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        </header>
+
+        <div className="main-layout">
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <section className="hero">
+                    <h2>학습을 시작해보세요</h2>
+                    <p>튜토리얼, 프로젝트, 노트를 통해 지식을 확장하세요</p>
+                    <div className="cta-buttons">
+                      <Link to="/tutorial" className="btn primary">
+                        학습 시작하기
+                      </Link>
+                      <Link to="/project" className="btn secondary">
+                        프로젝트 보기
+                      </Link>
+                    </div>
+                  </section>
+
+                  <section className="features">
+                    <h2>제공 서비스</h2>
+                    <div className="feature-grid">
+                      {sections.map(({ title, type, icon }) => (
+                        <div key={type} className="feature-card">
+                          <div className="feature-icon">{icon}</div>
+                          <h3>{title}</h3>
+                          <p>{title} 모음을 확인해보세요</p>
+                          <Link to={`/${type}`} className="btn secondary">
+                            {title} 바로가기
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                </>
+              } />
+              <Route path="/:type" element={<SectionPage />} />
+            </Routes>
+          </main>
+        </div>
+
+        <footer className="footer">
+          <div className="footer-content">
+            <div className="footer-section">
+              <h3>소개</h3>
+              <p>Luminous Ledger는 개인 지식 관리 시스템입니다</p>
+            </div>
+            <div className="footer-section">
+              <h3>빠른 링크</h3>
+              <ul>
+                {sections.map(({ title, type }) => (
+                  <li key={type}>
+                    <Link to={`/${type}`} className="footer-link">
+                      {title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="footer-section">
+              <h3>문의</h3>
+              <p>지원 및 피드백은 언제든 연락해 주세요</p>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2025 Luminous Ledger. 모든 권리 보유.</p>
+          </div>
+        </footer>
+      </div>
+    </Router>
   );
 }
 
