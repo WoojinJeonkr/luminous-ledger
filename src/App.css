@@ -1,3 +1,123 @@
+#root.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 2rem;
+  color: #1a1a1a;
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.date {
+  color: #444;
+}
+
+.type {
+  padding: 0.25rem 0.5rem;
+  background-color: #e8e8e8;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  padding: 0.25rem 0.5rem;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.description {
+  margin-top: 0.5rem;
+  color: #444;
+}
+
+.main-content {
+  line-height: 1.6;
+}
+
+.main-content h1, .main-content h2, .main-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.main-content h1 {
+  font-size: 2rem;
+}
+
+.main-content h2 {
+  font-size: 1.5rem;
+}
+
+.main-content h3 {
+  font-size: 1.25rem;
+}
+
+.main-content p {
+  margin-bottom: 1rem;
+}
+
+.main-content ul, .main-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.main-content code {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9rem;
+  background-color: #f8f8f8;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+}
+
+.main-content pre {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.main-content pre code {
+  display: block;
+  padding: 0;
+  background: none;
+}
+
+.language-container {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.language-container code {
+  display: block;
+  padding: 0;
+  background: none;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

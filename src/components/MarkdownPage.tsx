@@ -1,10 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkPrism from 'remark-prism';
-import rehypeHighlight from 'rehype-highlight';
 import rehypeSlug from 'rehype-slug';
-import rehypeRaw from 'rehype-raw';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 interface MarkdownPageProps {
@@ -12,30 +8,31 @@ interface MarkdownPageProps {
 }
 
 export const MarkdownPage: React.FC<MarkdownPageProps> = ({ content }) => {
+  if (!content) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm, remarkPrism]}
       rehypePlugins={[
         rehypeSlug,
-        rehypeRaw,
-        rehypeHighlight,
         rehypeAutolinkHeadings,
       ]}
       components={{
-        code({ inline, className, children, ...props }) {
+        code({ className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || '');
-          return !inline && match ? (
+          const language = match ? match[1] : 'text';
+          return (
             <pre className="language-container">
-              <code className={className} {...props}>
+              <code className={`language-${language}`} {...props}>
                 {children}
               </code>
             </pre>
-          ) : (
-            <code className={className} {...props}>
-              {children}
-            </code>
           );
         },
+        html: ({ children }) => (
+          <div dangerouslySetInnerHTML={{ __html: typeof children === 'string' ? children : '' }} />
+        )
       }}
     >
       {content}
