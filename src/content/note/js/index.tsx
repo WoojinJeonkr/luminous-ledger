@@ -2,17 +2,6 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import MarkdownRenderer from '../../../components/MarkdownRenderer';
 
-// Helper function to safely get file content
-const getFileContent = (content: any): string => {
-  if (typeof content === 'string') {
-    return content;
-  }
-  if (typeof content === 'object' && content !== null && 'default' in content) {
-    return content.default || '';
-  }
-  return '';
-};
-
 // Helper function to parse metadata
 const parseMetadata = (content: string): { [key: string]: string } => {
   // 더 유연한 메타데이터 매칭을 위한 정규식
@@ -61,19 +50,21 @@ const createFileObject = (content: string, path: string, slug: string, title: st
 };
 
 // Get all markdown files in the current directory
-const getMarkdownFiles = (): MarkdownFile[] => {
-  const files = import.meta.glob('./*.md', { eager: true });
-
-  return Object.entries(files).map(([path, content]) => {
-    const filename = path.split('/').pop() || '';
-    const slug = filename.replace('.md', '');
-    const title = filename.replace('.md', '').replace(/-/g, ' ').replace(/\w+/g, (word) =>
-      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    );
-
-    const fileContent = getFileContent(content);
-    return createFileObject(fileContent, path, slug, title);
-  });
+const getMarkdownFiles = async (): Promise<MarkdownFile[]> => {
+  // files.json에서 파일 목록을 가져옴
+  const res = await fetch('/content/note/js/files.json');
+  const fileList: string[] = await res.json();
+  return Promise.all(
+    fileList.map(async (filename) => {
+      const response = await fetch(`/content/note/js/${filename}`);
+      const content = await response.text();
+      const slug = filename.replace('.md', '');
+      const title = filename.replace('.md', '').replace(/-/g, ' ').replace(/\w+/g, (word) =>
+        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+      );
+      return createFileObject(content, filename, slug, title);
+    })
+  );
 };
 
 export default function JSNoteLayout() {
