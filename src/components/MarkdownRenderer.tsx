@@ -3,8 +3,8 @@ import type { Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark, materialLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
+import './MarkdownRenderer.css';
 
 interface MarkdownRendererProps {
   content: string;
@@ -17,7 +17,7 @@ export default function MarkdownRenderer({ content, darkMode = false }: Markdown
   const meta = metaMatch ? parseMetadata(metaMatch[1]) : {};
 
   // 메타데이터 제거 후 실제 내용만 남기기
-  const mainContent = content.replace(/^---\n[\s\S]*?\n---\n/, '');
+  const mainContent = content.replace(/^---\n[\s\S]*?\n---(\n)?/, '');
 
   // 메타데이터가 없을 때 자동 계산
   const autoMeta: { [key: string]: string } = { ...meta };
@@ -39,44 +39,39 @@ export default function MarkdownRenderer({ content, darkMode = false }: Markdown
   const components: Components = {
     code({ inline, className, children, ...props }: any) {
       if (inline) {
-        return <code className={className}>{children}</code>;
+        return (
+          <code className={`inline ${className || ''}`} {...props}>
+            {children}
+          </code>
+        );
       }
       const match = /language-(\w+)/.exec(className || '');
       const language = match ? match[1] : 'text';
-      const codeContent = String(children).trim();
+      const codeContent = String(children).replace(/^\n+|\n+$/g, '');
       return (
-        <div className="code-block-container" style={{
-          margin: '1.5rem 0',
-          borderRadius: '0.75rem',
-          overflow: 'hidden',
-          boxShadow: darkMode ? '0 2px 8px rgba(0, 0, 0, 0.15)' : '0 2px 8px rgba(0, 0, 0, 0.05)',
-          background: darkMode ? '#1a1a1a' : '#fff',
-        }}>
-          <div className="code-block-header" style={{
-            padding: '0.75rem 1.25rem',
-            backgroundColor: darkMode ? '#2a2a2a' : '#f8f8f8',
-            color: darkMode ? '#fff' : '#333',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderBottom: darkMode ? '1px solid #333' : '1px solid #eee',
-          }}>
-            <span style={{
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              textTransform: 'capitalize',
-              letterSpacing: '0.025em'
-            }}>{language}</span>
+        <div className="code-block-container">
+          <div className="code-block-header">
+            <span className="language-label">{language.toUpperCase()}</span>
+            <div className="window-controls">
+              <div className="window-control close" />
+              <div className="window-control minimize" />
+              <div className="window-control maximize" />
+            </div>
           </div>
           <SyntaxHighlighter
             language={language}
             style={darkMode ? materialDark : materialLight}
-            {...props}
             customStyle={{
+              margin: 0,
               padding: '1rem',
-              backgroundColor: darkMode ? '#1a1a1a' : '#fff',
-              borderRadius: 0,
+              borderBottomLeftRadius: '0.5rem',
+              borderBottomRightRadius: '0.5rem',
+              background: 'var(--code-content-bg)',
+              fontSize: '0.875rem',
+              lineHeight: '1.5',
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace'
             }}
+            {...props}
           >
             {codeContent}
           </SyntaxHighlighter>
@@ -84,124 +79,67 @@ export default function MarkdownRenderer({ content, darkMode = false }: Markdown
       );
     },
     blockquote: ({ className, children, ...props }) => (
-      <blockquote
-        style={{
-          borderLeft: '3px solid #e2e8f0',
-          padding: '1rem',
-          margin: '1.5rem 0',
-          backgroundColor: '#f8fafc',
-        }}
-        className={className}
-        {...props}
-      >
+      <blockquote className={className} {...props}>
         {children}
       </blockquote>
     ),
     table: ({ className, children, ...props }) => (
-      <table
-        style={{
-          width: '100%',
-          borderCollapse: 'collapse',
-          margin: '1.5rem 0',
-          backgroundColor: 'white',
-        }}
-        className={className}
-        {...props}
-      >
+      <table className={className} {...props}>
         {children}
       </table>
     ),
     th: ({ className, children, ...props }) => (
-      <th
-        style={{
-          padding: '1rem',
-          borderBottom: '2px solid #e2e8f0',
-          backgroundColor: '#f8fafc',
-          fontWeight: 'bold',
-        }}
-        className={className}
-        {...props}
-      >
+      <th className={className} {...props}>
         {children}
       </th>
     ),
     td: ({ className, children, ...props }) => (
-      <td
-        style={{
-          padding: '1rem',
-          borderBottom: '1px solid #e2e8f0',
-        }}
-        className={className}
-        {...props}
-      >
+      <td className={className} {...props}>
         {children}
       </td>
     ),
     ul: ({ className, children, ...props }) => (
-      <ul
-        style={{
-          marginBottom: '1rem',
-          paddingLeft: '1.5rem',
-        }}
-        className={className}
-        {...props}
-      >
+      <ul className={className} {...props}>
         {children}
       </ul>
     ),
     ol: ({ className, children, ...props }) => (
-      <ol
-        style={{
-          marginBottom: '1rem',
-          paddingLeft: '1.5rem',
-        }}
-        className={className}
-        {...props}
-      >
+      <ol className={className} {...props}>
         {children}
       </ol>
     ),
     li: ({ className, children, ...props }) => (
-      <li
-        style={{
-          marginBottom: '0.5rem',
-        }}
-        className={className}
-        {...props}
-      >
+      <li className={className} {...props}>
         {children}
       </li>
     ),
-    h1: ({ children, ...props }) => (
-      <h1 {...props} style={{ fontSize: '2rem', marginBottom: '1rem', fontWeight: 'bold' }}>
+    h1: ({ className, children, ...props }) => (
+      <h1 className={className} {...props}>
         {children}
       </h1>
     ),
-    h2: ({ children, ...props }) => (
-      <h2 {...props} style={{ fontSize: '1.75rem', marginBottom: '1rem', fontWeight: 'bold' }}>
+    h2: ({ className, children, ...props }) => (
+      <h2 className={className} {...props}>
         {children}
       </h2>
     ),
-    h3: ({ children, ...props }) => (
-      <h3 {...props} style={{ fontSize: '1.5rem', marginBottom: '1rem', fontWeight: 'bold' }}>
+    h3: ({ className, children, ...props }) => (
+      <h3 className={className} {...props}>
         {children}
       </h3>
     ),
-    p: ({ children, ...props }) => (
-      <p {...props} style={{ marginBottom: '0.75rem', lineHeight: '1.5' }}>
+    p: ({ className, children, ...props }) => (
+      <p className={className} {...props}>
         {children}
       </p>
     ),
-    a: ({ children, href, ...props }) => (
+    a: ({ className, children, href, ...props }) => (
       <a
-        {...props}
+        className={className}
         href={href}
-        style={{
-          color: darkMode ? '#4299e1' : '#2b6cb0',
-          textDecoration: 'none'
-        }}
         target="_blank"
         rel="noopener noreferrer"
+        {...props}
       >
         {children}
       </a>
@@ -212,7 +150,7 @@ export default function MarkdownRenderer({ content, darkMode = false }: Markdown
     <div className="markdown-content">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeRaw, rehypeSanitize]}
+        rehypePlugins={[rehypeSanitize]}
         components={components}
       >
         {mainContent}
