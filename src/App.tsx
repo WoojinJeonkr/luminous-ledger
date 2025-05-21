@@ -6,7 +6,7 @@ import Home from './content/home';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import JSNoteLayout from './content/note/js';
-import SQLNoteLayout from './content/note/sql/index';
+import SQLNoteLayout from '../public/content/note/sql/index';
 
 const sections = [
   { title: '튜토리얼', type: 'tutorial', icon: '📚' },

@@ -100,7 +100,7 @@ export default function JSNoteLayout() {
   // URL 변경 시 자동으로 내용을 로드
   useEffect(() => {
     if (file) {
-      fetch(`/src/content/note/js/${file}.md`)
+      fetch(`/content/note/js/${file}.md`)
         .then(response => response.text())
         .then(content => {
           setContent(content);
@@ -208,7 +208,7 @@ export default function JSNoteLayout() {
                     border: 'none'
                   }}
                   onClick={() => {
-                    fetch(`/src/content/note/js/${f.slug}.md`)
+                    fetch(`/content/note/js/${f.slug}.md`)
                       .then(response => response.text())
                       .then(content => {
                         setContent(content);
