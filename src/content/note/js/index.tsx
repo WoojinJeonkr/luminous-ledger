@@ -62,7 +62,7 @@ const createFileObject = (content: string, path: string, slug: string, title: st
 
 // Get all markdown files in the current directory
 const getMarkdownFiles = (): MarkdownFile[] => {
-  const files = import.meta.glob('../../note/js/*.md', { eager: true });
+  const files = import.meta.glob('./*.md', { eager: true });
 
   return Object.entries(files).map(([path, content]) => {
     const filename = path.split('/').pop() || '';
@@ -99,32 +99,25 @@ export default function JSNoteLayout() {
 
   // URL 변경 시 자동으로 내용을 로드
   useEffect(() => {
-    const loadContent = async () => {
-      setIsLoading(true);  // 로딩 시작
-      const params = new URLSearchParams(window.location.search);
-      const slug = params.get('file');
-
-      if (slug) {
-        try {
-          const response = await fetch(`/content/note/js/${slug}.md`);
-          const content = await response.text();
+    if (file) {
+      fetch(`/src/content/note/js/${file}.md`)
+        .then(response => response.text())
+        .then(content => {
           setContent(content);
           const meta = parseMetadata(content);
           setCurrentDate(meta.작성일);
-        } catch (error) {
-          console.error(`Error reading file ${slug}:`, error);
+        })
+        .catch(error => {
+          console.error(`Error reading file ${file}:`, error);
           setContent('');
           setCurrentDate('');
-        }
-      } else {
-        setContent('');
-        setCurrentDate('');
-      }
-      setIsLoading(false);  // 로딩 종료
-    };
-
-    loadContent();
-  }, []);
+        });
+    } else {
+      setContent('');
+      setCurrentDate('');
+    }
+    setIsLoading(false);
+  }, [file]);
 
   // Handle navigation
   useEffect(() => {
