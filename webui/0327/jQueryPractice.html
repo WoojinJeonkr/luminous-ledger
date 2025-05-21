@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	</head>
+	<body>
+		아이디: <input type="text" id="loginId" value="a"><br>
+		패스워드: <input type="text" id="loginPass" value="b"><br>
+		<input type="button" id="loginBtn" value="로그인">
+	</body>
+	<script>
+		$("#loginBtn").click(function() {
+			let loginId = $("#loginId").val();
+			let loginPass = $("#loginPass").val();
+			if (loginId == 'polytech' && loginPass == '12341234') {
+				console.log("로그인 성공");
+			} else {
+				console.log("로그인 실패");
+			}
+		});
+	</script>
+</html>

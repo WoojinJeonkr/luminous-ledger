@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta>
+    <title>문제1</title>
+  </head>
+  <body>
+    <!--
+        input1, input2로부터 숫자 2개를 입력받아
+        두 수의 합이 10이상인지 아닌지 console에 출력하세요
+    -->
+    숫자 1: <input type="text" id="num1" placeholder="숫자로 입력!"><br>
+    숫자 2: <input type="text" id="num2" placeholder="숫자로 입력!">
+    <input type="button" value="확인" id="checkBtn">
+  </body>
+  <script>
+    // id가 checkBtn인 버튼의 click 이벤트 실행 시
+    if (document.getElementById("checkBtn").addEventListener('click', function() {
+      // id가 num1인 input의 값을 가져와 inputOne 변수에 대입
+      let num1 = Number(document.getElementById('num1').value);
+      // id가 input2인 input의 값을 가져와 inputTwo 변수에 대입
+      let num2 = Number(document.getElementById('num2').value);
+      // inputOne과 inputTwo의 합 구해서 sumNum 변수에 대입
+      let sumNum = num1 + num2;
+      // sumNum이 10 이상인지 확인해서 boolean값(true / false)을 checkSumNum 변수에 대입
+      let checkSumNum = sumNum >= 10;
+
+      // 분기 처리
+      if (checkSumNum) { // checkSumNum이 true면 안쪽 console.log 출력
+        console.log("두 수의 합 " + String(sumNum) + "은 10 이상입니다");
+      } else { // checkSumNum이 false면 안쪽 console.log 출력
+        console.log("두 수의 합 " + String(sumNum) + "은 10 이상이 아닙니다");
+      }
+    }));
+  </script>
+</html>

@@ -6,11 +6,10 @@ interface ContentProps {
 }
 
 function loadComponent(type: string, urlType: string, slug?: string): React.LazyExoticComponent<any> {
-  const fileName = slug ? `${slug}.tsx` : 'index.tsx';
-  const path = type === 'home' ? '/src/content/home' : `/src/content/${type || urlType}`;
-  const url = `${path}/${fileName}`;
+  const fileName = slug ? slug : 'index';
+  const typePath = type === 'home' ? 'home' : type || urlType;
   
-  return lazy(() => import(url));
+  return lazy(() => import(`../content/${typePath}/${fileName}.tsx`));
 }
 
 export function Content({ type }: ContentProps) {

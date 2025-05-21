@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Document</title>
+</head>
+
+<body>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  $(document).ready(function () {
+    generateRadio(3, 'scoreDiv', 'scoreRadio', 'scoreWeight');
+    $('body').append(`<div id="result"></div>
+    <input type="button" id="btn" value="계산">`)
+
+    $('#btn').click(function () {
+      calculateResult(3, 'scoreRadio', 'scoreWeight');
+    });
+  });
+
+  function generateRadio(loopCount, divName, radioName, weightName) {
+    for (let i = 0; i < loopCount; i++) {
+      let newDiv = $('<div>', { id: `${divName}_${i}` });;
+      newDiv.append(`${i + 1}번&ensp;`)
+      for (let j = 0; j < 5; j++) {
+        let newInputRadio = `<label>${j}
+          <input type="radio" name="${radioName}_${i}" value="${j}">
+        </label>&ensp;`;
+        newDiv.append(newInputRadio);
+      }
+      let inputWeight = `가중치<input id=${weightName}_${i}>`;
+      newDiv.append(inputWeight);
+      $('body').append(newDiv);
+    }
+  }
+
+  function calculateResult(loopCount, radioName, weightName) {
+    let total = 0;
+    let expression = "";
+    for (let i = 0; i < loopCount; i++) {
+      let selectedVal = $(`input[name=${radioName}_${i}]:checked`).val();
+      let weight = $(`#${weightName}_${i}`).val();
+
+      selectedVal = selectedVal !== undefined ? Number(selectedVal) : 0;
+      weight = weight !== undefined ? Number(weight) : 0;
+
+      total += selectedVal * weight;
+
+      expression += `${selectedVal}X${weight}`;
+      if (i < loopCount - 1) {
+        expression += " + ";
+      }
+    }
+    $("#result").html(`${expression} = ${total}`);
+  }
+</script>
+
+</html>

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 const sections = [
   { title: '튜토리얼', type: 'tutorial' },
   { title: '프로젝트', type: 'project' },
-  { title: '노트', type: 'note' }
+  { title: '노트', type: 'note' },
+  { title: '오류 목록', type: 'errors' }
 ];
 
 export default function Footer() {

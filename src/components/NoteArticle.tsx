@@ -4,7 +4,7 @@ import { useMemo, type ReactNode } from 'react';
 interface NoteArticleProps {
   title: string;
   date: string;
-  summary: String;
+  summary: string;
   content: ReactNode;
   prev?: { slug: string; title: string } | null;
   next?: { slug: string; title: string } | null;
@@ -36,8 +36,9 @@ function estimateReadTime(content: ReactNode): string {
   }
   extract(content);
 
-  const textMinutes = Math.ceil(text.length / 400);
-  const codeMinutes = Math.ceil(codeLines / 25);
+  // 읽는 시간 계산 (더 현실적인 값으로 조정)
+  const textMinutes = Math.ceil(text.length / 200); // 일반 텍스트: 200글자/분
+  const codeMinutes = Math.ceil(codeLines / 10);   // 코드: 10줄/분
   const total = Math.max(1, textMinutes + codeMinutes);
 
   return `${total}분`;

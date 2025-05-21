@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>JS 조건문과 타입</title>
+  </head>
+  <body>
+    JS
+  </body>
+  <script>
+    // let a = 0;
+    // console.log(a); // 0
+    // a = "string";
+    // console.log(a); // string
+    // a = [1,2,3];
+    // console.log(a); // [1,2,3]
+
+    console.log(1<2); // true
+
+    // 0, false, undefined, null
+    if (0) {
+      console.log(1); // 조건이 false라 안 찍힘
+    }
+    if (false) {
+      console.log(2); // 조건이 false라 안 찍힘
+    }
+    if (undefined) {
+      console.log(3); // 조건이 false라 안 찍힘
+    }
+    if (null) {
+      console.log(4); // 조건이 false라 안 찍힘
+    }
+
+    if (1) {
+        console.log(5); // 5
+    }
+    if (2) {
+        console.log(6); // 6
+    }
+    if ("abc") {
+        console.log(7); // 7
+    }
+    if ([1,2,3]) {
+        console.log(8); // 8
+    }
+    if (1.5) {
+        console.log(9); // 9
+    }
+    if ([]) {
+        console.log(10); // 10
+    }
+    else {
+			// 위 조건이 다 거짓이면 이곳의 코드가 실행됨
+    }
+
+    let b, c;
+    b = 10;
+    c = "10";
+    console.log("b의 타입:", typeof(b), "c의 타입:", typeof(c)); // number, string
+    console.log("b==c:", b==c); // true
+    console.log("b===c:", b===c); // false
+    // 문자 c를 숫자로 변환
+    c = Number(c);
+    console.log("c:", c); // c: 10
+  </script>
+</html>

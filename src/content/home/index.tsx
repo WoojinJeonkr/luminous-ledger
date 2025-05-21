@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 export default function Home() {
   return (
     <div className="home">
-      <h1 className="home-title">Luminous Ledger</h1>
-      <p className="home-subtitle">개발자의 지식과 경험을 기록하는 공간</p>
       <div className="home-features">
         <Link to="/tutorial" className="feature" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <h3>📚 튜토리얼</h3>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>별찍기2 - 직각삼각형(우) 출력</title>
+  </head>
+  <body>
+    콘솔을 확인해주세요
+  </body>
+  <script>
+    let totalRows = 8; // 삼각형 높이
+
+    for (let i = 0; i < totalRows; i++) {
+      let line = "";
+      let numStars = 1 + i * 2; // 별 개수
+      let numSpaces = (totalRows - 1) * 2 - numStars + 1; // 공백 개수
+
+			// 공백 추가
+      for (let j = 0; j < numSpaces; j++) {
+        line += " ";
+      }
+
+			// 별 추가
+      for (let k = 0; k < numStars; k++) {
+        line += "*";
+      }
+
+      console.log(line);
+    }
+  </script>
+</html>

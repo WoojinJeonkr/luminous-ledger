@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MarkdownRenderer } from '@/components/MarkdownRenderer';
+import MarkdownRenderer from '@/components/MarkdownRenderer';
 
 interface MarkdownFile {
   title: string;
@@ -12,7 +12,7 @@ export default function SQLNoteLayout() {
   const { file } = useParams();
   const [content, setContent] = useState('');
   const [markdownFiles, setMarkdownFiles] = useState<MarkdownFile[]>([]);
-  const [search, setSearch] = useState('');
+  const search = useState('')[0];
 
   const getMarkdownFiles = (): MarkdownFile[] => {
     return [

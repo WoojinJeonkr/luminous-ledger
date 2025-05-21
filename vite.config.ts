@@ -13,7 +13,8 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       {
-        name: 'tsx-files',
+        name: 'content-files',
+        enforce: 'pre',
         async resolveId(id) {
           if (id.startsWith('/src/content/')) {
             return id;
@@ -23,14 +24,14 @@ export default defineConfig(({ mode }) => {
           if (id.startsWith('/src/content/')) {
             try {
               const filePath = join(contentDir, id.replace('/src/content/', ''));
-              const text = fs.readFileSync(filePath, 'utf-8');
+              const content = fs.readFileSync(filePath, 'utf-8');
               return {
-                code: text,
+                code: `export default ${JSON.stringify(content)}`,
                 map: null
               };
             } catch (err) {
-              console.error(`Error loading ${id}:`, err);
-              throw err;
+              console.error('Error loading file:', err);
+              return null;
             }
           }
         }
@@ -46,9 +47,9 @@ export default defineConfig(({ mode }) => {
         input: {
           main: join(__dirname, 'index.html')
         }
-      },
-      assetsInclude: ['src/content/note/**/*.md']
+      }
     },
+    assetsInclude: ['src/content/note/**/*.md'],
     server: {
       port: 4000,
       open: true,

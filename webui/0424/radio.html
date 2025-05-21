@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+
+<body>
+	1<input type="radio" name="r" value="">
+	2<input type="radio" name="r" value="">
+	3<input type="radio" name="r" value="">
+	4<input type="radio" name="r" value="">
+	5<input type="radio" name="r" value="">
+	6<input type="radio" name="r" value="">
+	7<input type="radio" name="r" value="">
+	<input type="button" id="btn" value="버튼">
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+	// let car = {};
+	// car.color = "red";
+	// car.weight = "100kg";
+	// car.kind = "소나타";
+	// car.accidentHistory = [{ data: "2020-02-02", name: "누수" }, { data: "2030-05-21", name: "반파" }];
+
+	// console.log(car);
+
+	$("#btn").click(function () {
+		inputRadio = $('input[name="r"]');
+
+		for (let i = 0; i < inputRadio.length; i++) {
+			if (inputRadio[i].checked) {
+				alert(i + 1);
+			}
+		}
+	})
+</script>
+
+</html>

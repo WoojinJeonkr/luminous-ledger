@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			table, td, th {
+			  border : 1px solid black;
+			  border-collapse : collapse;
+			}
+
+			th, td {
+			  text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>369게임</h1>
+		<p>1200에서 1400까지 3, 6, 9라는 숫자를 포함하고 있는 숫자에 한해
+			 짝을 출력합니다.</p>
+		<details open>
+			<summary>게임 결과</summary><br>
+			<table>
+				<thead>
+					<tr>
+						<th>Number</th>
+						<th>게임 결과</th>
+					</tr>
+				</thead>
+				<tbody id="gameResult"></tbody>
+			</table>
+		</details>
+	</body>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+
+		let clapStr = '';
+		let startNum = 1200;
+		let endNum = 1400;
+
+		for (let i = startNum; i < endNum + 1; i++) {
+			let numStr = String(i);
+			for (let j = 0; j < numStr.length; j++) {
+				let compareNum = Number(numStr[j]);
+				if (compareNum != 0 && compareNum % 3 == 0) {
+					clapStr += '짝';
+				}
+			}
+
+			if (clapStr != '') {
+				$('#gameResult').append(`<tr><td>${i}</td><td>${clapStr}</td></tr>`);
+			} else {
+				$('#gameResult').append(`<tr><td>${i}</td><td>${i}</td></tr>`);
+			}
+
+			clapStr = '';
+		}
+
+	</script>
+</html>

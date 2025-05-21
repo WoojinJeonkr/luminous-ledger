@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>구구단</title>
+	</head>
+	<body>
+		<input type="text" id="inputNum" name="inputNum" value="1">
+		<input type="button" id="guguBtn" name="guguBtn" value="구구단">
+		<p>1단부터 n단까지 학습</p>
+		<div></div>
+	</body>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+		$('#guguBtn').click(function() {
+			let inputNum = $('#inputNum').val();
+			let printRes = "";
+			if (inputNum <= 0) {
+					$('div').html("입력 조건에 어긋납니다. (오류: 0이거나 음수)");
+			} else {
+				for (let i = 1; i < 10; i++) {
+					let mulRes = Number(inputNum)*i;
+					let printStr = inputNum + '*' + i + '=' + mulRes + '<br>';
+					printRes = printRes + printStr;
+					$('div').html(printRes);
+				}
+			}
+		})
+	</script>
+</html>

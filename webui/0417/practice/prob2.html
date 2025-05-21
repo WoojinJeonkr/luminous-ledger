@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>이중 배열 실습 2</title>
+  </head>
+  <body>
+    <div id="prob1"></div>
+    <br />
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script>
+    $('#prob1').append(`<h2>문제 1</h2>`);
+
+    let arr1 = [];
+    let num = 0;
+    for (let i = 0; i < 5; i++) {
+      arr1[i] = [];
+      for (let j = 0; j < 5; j++) {
+        arr1[i][j] = num;
+        num += i * 2 + j * 3;
+      }
+    }
+    console.log(arr1);
+
+    let arr2 = [];
+    for (let i = 1; i < 10; i = i + 3) {
+      arr2[(i + 2) / 3 - 1] = [];
+      for (let j = 0; j < 5; j++) {
+        arr2[(i + 2) / 3 - 1][j] = i * j;
+      }
+    }
+    console.log(arr2);
+  </script>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <span id="radioArea"></span>
+    <input type="button" id="btn" value="체크" />
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script>
+    // 문제) for문과 document.getElementByName을 사용하여
+    // 버튼 클릭 시 라디오박스 중 어떤 것이 선택되었는지 alert로 띄우기
+    for (let i = 0; i < 7; i++) {
+      $("#radioArea").append(`${i+1}<input type="radio" name="r" value="" /> `)
+    }
+
+    $('#btn').click(function() {
+      let inputRadio = document.getElementsByName('r');
+      let radioNum = inputRadio.length;
+      for (let i = 0; i < radioNum; i++) {
+        if (inputRadio[i].checked) {
+          alert(`${i+1}번 radio가 선택되었습니다.`);
+          return;
+        }
+      }
+      alert(`radio를 선택해주세요.`);
+    });
+  </script>
+</html>
