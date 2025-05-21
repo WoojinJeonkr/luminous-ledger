@@ -6,9 +6,7 @@ import Home from './content/home';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import JSNoteLayout from './content/note/js';
-import JSInstall from './content/note/js/install';
-import JSExplore1 from './content/note/js/explore1';
-import JSExplore2 from './content/note/js/explore2';
+import SQLNoteLayout from './content/note/sql/index';
 
 const sections = [
   { title: '튜토리얼', type: 'tutorial', icon: '📚' },
@@ -35,35 +33,17 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/note/js" element={<JSNoteLayout />}>
-              <Route index element={
-                <div
-                  style={{
-                    color: '#64748b',
-                    fontSize: '1.15rem',
-                    marginTop: '3rem',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    textAlign: 'center',
-                    lineHeight: 1.7,
-                    background: '#f9fafb',
-                    borderRadius: '8px',
-                    marginBottom: '2.5rem',
-                    maxWidth: '100%',
-                  }}
-                >
-                  왼쪽에서 파일을 선택하거나 검색해 주세요.
-                </div>
-              } />
-              <Route path="install" element={<JSInstall />} />
-              <Route path="explore1" element={<JSExplore1 />} />
-              <Route path="explore2" element={<JSExplore2 />} />
-            </Route>
-            <Route path="/note/:slug" element={<Content />} />
+            <Route path="/note" element={<ContentList type="note" />} />
+            <Route path="/note/js" element={<JSNoteLayout />} />
+            <Route path="/note/js/:file" element={<JSNoteLayout />} />
+            <Route path="/note/sql" element={<SQLNoteLayout />} />
+            <Route path="/note/sql/:file" element={<SQLNoteLayout />} />
             {sections.filter(s => s.type !== 'note').map(({ type }) => (
               <Route key={type} path={`/${type}`} element={<ContentList type={type} />} />
             ))}
             <Route path="/:type/:slug" element={<Content />} />
+            <Route path="/errors" element={<div>404: Not Found</div>} />
+            <Route path="*" element={<div>404: Not Found</div>} />
           </Routes>
         </main>
         <Footer />

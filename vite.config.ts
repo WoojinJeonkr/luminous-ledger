@@ -46,11 +46,15 @@ export default defineConfig(({ mode }) => {
         input: {
           main: join(__dirname, 'index.html')
         }
-      }
+      },
+      assetsInclude: ['src/content/note/**/*.md']
     },
     server: {
-      port: 3000,
-      open: true
+      port: 4000,
+      open: true,
+      fs: {
+        allow: ['..']
+      }
     },
     resolve: {
       alias: {
