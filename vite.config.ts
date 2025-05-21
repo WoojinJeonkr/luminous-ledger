@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => {
         }
       }
     ],
-    base: env.VITE_BASE_URL || '/',
+    base: '/',
     build: {
       outDir: 'dist',
       emptyOutDir: true,
